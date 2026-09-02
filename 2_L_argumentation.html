@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="fr-BE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L’argumentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080d1c; --bg2:#0f1730; --bg3:#17224a; --card:#111a38;
+  --accent:#a78bfa; --accent2:#c084fc; --orange:#f59e0b;
+  --text:#eef2ff; --text2:#b6c0e2; --text3:#7884ad;
+  --border:#243063; --radius:16px; --success:#34d399; --error:#f87171;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Outfit',system-ui,sans-serif; background:var(--bg); color:var(--text);
+  min-height:100vh; line-height:1.55; -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(circle at 12% -10%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 45%),
+                   radial-gradient(circle at 92% 0%, color-mix(in srgb, var(--accent2) 16%, transparent), transparent 40%);
+  background-attachment:fixed;
+}
+.mono{font-family:'Space Mono',monospace}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px 80px}
+
+/* ---------- Header ---------- */
+header{position:sticky;top:0;z-index:40;background:rgba(8,13,28,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.hbar{max-width:860px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.hname{font-weight:800;font-size:1rem;letter-spacing:-.01em;flex:1;min-width:120px}
+.hname small{display:block;font-weight:400;font-size:.72rem;color:var(--text3);letter-spacing:0}
+.chip{font-family:'Space Mono',monospace;font-size:.75rem;background:var(--bg3);border:1px solid var(--border);padding:5px 10px;border-radius:999px;white-space:nowrap}
+.chip b{color:var(--accent)}
+.bar{height:5px;background:var(--bg3)}
+.bar span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:width .35s ease;border-radius:0 4px 4px 0}
+
+/* ---------- Blocs ---------- */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:16px 0;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+h1{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;margin-bottom:6px;line-height:1.15}
+h2{font-size:1.25rem;font-weight:700;margin-bottom:10px;letter-spacing:-.01em}
+h3{font-size:1rem;font-weight:700;margin:14px 0 6px;color:var(--accent)}
+p{color:var(--text2);margin-bottom:10px}
+ul,ol{color:var(--text2);margin:0 0 10px 20px}
+li{margin-bottom:5px}
+b,strong{color:var(--text);font-weight:700}
+.lead{font-size:1.02rem;color:var(--text2)}
+.eyebrow{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--accent)}
+hr{border:none;border-top:1px solid var(--border);margin:16px 0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.92rem}
+th,td{border:1px solid var(--border);padding:7px 9px;text-align:left;color:var(--text2)}
+th{background:var(--bg3);color:var(--text);font-weight:600}
+
+/* ---------- Boutons ---------- */
+button{font-family:inherit;font-size:1rem;cursor:pointer;border-radius:12px;transition:transform .12s ease,filter .15s ease}
+button:active{transform:scale(.98)}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06101f;border:none;padding:13px 22px;font-weight:700}
+.btn:hover{filter:brightness(1.1)}
+.btn.ghost{background:transparent;color:var(--text2);border:1px solid var(--border)}
+.btn.ghost:hover{color:var(--text);border-color:var(--accent)}
+.btn.wide{display:block;width:100%;margin-top:12px}
+.btn.sm{padding:9px 14px;font-size:.9rem}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+
+/* ---------- Hub ---------- */
+.levels{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:14px}
+.lvl{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:var(--radius);padding:16px;text-align:left;color:var(--text);width:100%}
+.lvl:hover{border-color:var(--accent);filter:brightness(1.08)}
+.lvl.lock{opacity:.5;border-left-color:var(--text3);cursor:not-allowed}
+.lvl .n{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--text3)}
+.lvl .t{font-weight:700;margin:3px 0 4px}
+.lvl .o{font-size:.85rem;color:var(--text2)}
+.lvl .stars{margin-top:8px;font-size:.95rem;letter-spacing:2px}
+
+/* ---------- Questions ---------- */
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;font-family:'Space Mono',monospace;font-size:.78rem;color:var(--text3)}
+.enonce{font-size:1.08rem;font-weight:600;margin-bottom:14px;white-space:pre-wrap}
+.texte-source{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent2);border-radius:10px;padding:14px;margin-bottom:14px;color:var(--text2);font-size:.95rem;white-space:pre-wrap}
+.opt{display:block;width:100%;text-align:left;background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:13px 15px;margin-bottom:9px;font-size:1rem}
+.opt:hover:not(:disabled){border-color:var(--accent);background:var(--bg3)}
+.opt:disabled{cursor:default}
+.opt.sel{border-color:var(--accent);background:var(--bg3)}
+.opt.good{border-color:var(--success);background:color-mix(in srgb,var(--success) 16%,var(--bg2))}
+.opt.bad{border-color:var(--error);background:color-mix(in srgb,var(--error) 14%,var(--bg2))}
+.opt .mk{float:right;font-weight:700}
+input[type=text]{width:100%;font-family:'Space Mono',monospace;font-size:1.05rem;background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:13px 15px;border-radius:12px}
+input[type=text]:focus{outline:none;border-color:var(--accent)}
+textarea{width:100%;min-height:170px;font-family:'Outfit',sans-serif;font-size:1rem;line-height:1.6;background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:14px;border-radius:12px;resize:vertical}
+textarea:focus{outline:none;border-color:var(--accent)}
+.calc{font-family:'Space Mono',monospace;font-size:.85rem;color:var(--accent);min-height:20px;margin-top:6px}
+.slots{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;min-height:44px;padding:8px;background:var(--bg2);border:1px dashed var(--border);border-radius:12px}
+.slot{background:var(--bg3);border:1px solid var(--accent);border-radius:9px;padding:6px 10px;font-size:.9rem}
+.slot i{font-family:'Space Mono',monospace;font-style:normal;color:var(--accent);margin-right:6px}
+.tok{display:inline-block;padding:3px 5px;margin:1px;border-radius:6px;border:1px dashed transparent;cursor:pointer;font-size:1rem}
+.tok:hover{background:var(--bg3)}
+.tok.flag{background:color-mix(in srgb,var(--orange) 28%,var(--bg2));border-color:var(--orange)}
+.tok.ok{background:color-mix(in srgb,var(--success) 22%,var(--bg2));border-color:var(--success)}
+.tok.miss{background:color-mix(in srgb,var(--error) 22%,var(--bg2));border-color:var(--error)}
+.zone-tok{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px;line-height:2.1;margin-bottom:12px}
+
+/* ---------- Feedback ---------- */
+.fb{border-radius:12px;padding:14px;margin-top:14px;border:1px solid var(--border);background:var(--bg2);animation:up .25s ease}
+.fb.good{border-color:var(--success)}
+.fb.warn{border-color:var(--orange)}
+.fb.bad{border-color:var(--error)}
+.fb .ttl{font-weight:700;margin-bottom:5px}
+.fb.good .ttl{color:var(--success)}
+.fb.warn .ttl{color:var(--orange)}
+.fb.bad .ttl{color:var(--error)}
+.fb p{margin:0;color:var(--text2)}
+.fb p+p{margin-top:8px}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ---------- Bilan ---------- */
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.88rem;color:var(--text2);margin-bottom:12px}
+.dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px}
+.medal{font-size:3.4rem;text-align:center;margin:6px 0}
+.grade{text-align:center;font-family:'Space Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--accent);margin-bottom:6px}
+.center{text-align:center}
+.confetti{position:fixed;top:-12px;width:9px;height:16px;z-index:99;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.15}}
+
+/* ---------- Divers ---------- */
+.note{font-size:.86rem;color:var(--text3);margin-top:10px}
+.pred{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.pred button{background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:9px 13px;font-family:'Space Mono',monospace}
+.pred button:hover{border-color:var(--accent)}
+.tag{display:inline-block;font-size:.72rem;font-family:'Space Mono',monospace;background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:2px 8px;border-radius:999px;margin-left:6px}
+@media(max-width:768px){ h1{font-size:1.55rem} .card{padding:16px} .levels{grid-template-columns:1fr} }
+@media(max-width:480px){ .wrap{padding:0 11px 60px} .hname{font-size:.92rem} .chip{font-size:.68rem;padding:4px 8px} .enonce{font-size:1rem} .btn{padding:12px 16px} }
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hbar">
+    <div class="hname">L’argumentation<small>Épreuve écrite · 5 niveaux</small></div>
+    <div class="chip">✅ <b id="hScore">0</b></div>
+    <div class="chip">🔥 <b id="hStreak">0</b></div>
+  </div>
+  <div class="bar"><span id="hBar"></span></div>
+</header>
+<div class="wrap" id="app"></div>
+
+<script>
+/* ============================================================
+   DONNÉES DE L'APPLICATION
+   ============================================================ */
+const APP = {
+titre: "L’argumentation",
+intro: "C’est la partie la plus lourde de l’épreuve : il faut d’abord comprendre comment un auteur défend une idée, puis défendre la tienne de la même manière. Cinq niveaux, du vocabulaire de base au texte complet.",
+
+memo: `
+<h3>Le vocabulaire, en une ligne chacun</h3>
+<table>
+<tr><th>Mot</th><th>Sens</th></tr>
+<tr><td>Thème</td><td>Le sujet dont on parle</td></tr>
+<tr><td>Thèse</td><td>L’opinion défendue</td></tr>
+<tr><td>Thèse adverse</td><td>L’opinion combattue</td></tr>
+<tr><td>Argument</td><td>La raison qui soutient la thèse</td></tr>
+<tr><td>Exemple</td><td>Le cas concret qui illustre l’argument</td></tr>
+<tr><td>Concession</td><td>Le point qu’on accorde à l’adversaire avant de le dépasser</td></tr>
+<tr><td>Réfutation</td><td>La démonstration que la thèse adverse est fausse</td></tr>
+</table>
+
+<h3>Le paragraphe argumentatif, toujours pareil</h3>
+<p><b>Connecteur → argument → explication → exemple → mini-conclusion.</b> Un paragraphe = un argument. Si tu as deux idées dans le même paragraphe, coupe-le en deux.</p>
+
+<h3>Les connecteurs à avoir en tête</h3>
+<table>
+<tr><th>Relation</th><th>Mots</th></tr>
+<tr><td>Ajouter</td><td>de plus, en outre, par ailleurs</td></tr>
+<tr><td>Opposer</td><td>mais, cependant, toutefois, en revanche</td></tr>
+<tr><td>Concéder</td><td>certes… mais, il est vrai que, bien sûr</td></tr>
+<tr><td>Causer</td><td>car, parce que, en effet, puisque</td></tr>
+<tr><td>Conclure une étape</td><td>donc, ainsi, par conséquent</td></tr>
+<tr><td>Illustrer</td><td>par exemple, ainsi, notamment</td></tr>
+<tr><td>Renverser</td><td>or</td></tr>
+</table>
+
+<h3>Le plan qui marche à tous les coups</h3>
+<ol>
+<li><b>Introduction</b> — une phrase d’entrée sur le sujet, la question posée, l’annonce de ta position.</li>
+<li><b>Concession</b> — ce que tu accordes à l’avis opposé (« Certes… »). Ce paragraphe te fait gagner des points : il montre que tu as vu l’autre côté.</li>
+<li><b>Argument 1 + exemple</b></li>
+<li><b>Argument 2 + exemple</b></li>
+<li><b>Argument 3 + exemple</b> (le plus fort en dernier)</li>
+<li><b>Conclusion</b> — bilan de ta démonstration, puis une ouverture ou une question.</li>
+</ol>
+
+<h3>Les cinq erreurs les plus fréquentes</h3>
+<ul>
+<li>Empiler des exemples sans argument : trois anecdotes ne font pas une démonstration.</li>
+<li>Oublier d’annoncer sa position dans l’introduction.</li>
+<li>Attaquer les personnes plutôt que leurs arguments.</li>
+<li>Écrire au registre familier (« les gens galèrent », « c’est nul »).</li>
+<li>Une conclusion qui répète l’introduction mot pour mot.</li>
+</ul>
+`,
+
+atelier: {
+  bouton: "Atelier plan",
+  titre: "Construis un plan complet en 10 minutes",
+  consigne: `<p>Choisis un sujet, remplis les cases, puis compare avec un plan modèle. À l’examen, ce travail se fait au brouillon et te prend un quart d’heure — c’est le quart d’heure qui décide de toute la copie.</p>`,
+  monter: function(){
+    const sujets = [
+      "Faut-il interdire les smartphones dans les écoles secondaires ?",
+      "Le télétravail est-il un progrès pour les travailleurs ?",
+      "Faut-il rendre le bénévolat obligatoire pour les jeunes ?"
+    ];
+    const z = document.getElementById('zoneAtelier');
+    z.innerHTML = `
+      <h3>1. Ton sujet</h3>
+      <div id="asuj">${sujets.map((s,i)=>`<button class="opt" id="s${i}">${s}</button>`).join('')}</div>
+      <div id="aform"></div>`;
+    sujets.forEach((s,i)=>{
+      document.getElementById('s'+i).onclick = () => {
+        sujets.forEach((_,j)=>document.getElementById('s'+j).classList.toggle('sel', i===j));
+        document.getElementById('aform').innerHTML = `
+        <h3>2. Ta position, en une phrase</h3>
+        <input type="text" placeholder="Je pense que…">
+        <h3>3. Ce que tu accordes à l’avis opposé</h3>
+        <input type="text" placeholder="Certes…">
+        <h3>4. Argument 1 + son exemple</h3>
+        <input type="text" placeholder="Argument, puis exemple concret">
+        <h3>5. Argument 2 + son exemple</h3>
+        <input type="text" placeholder="Argument, puis exemple concret">
+        <h3>6. Argument 3, le plus fort</h3>
+        <input type="text" placeholder="Argument, puis exemple concret">
+        <h3>7. Ton ouverture finale</h3>
+        <input type="text" placeholder="Une question ou un élargissement">
+        <button class="btn wide" id="amod">Voir un plan modèle sur ce sujet</button>
+        <div id="asol"></div>`;
+        document.getElementById('amod').onclick = () => {
+          document.getElementById('asol').innerHTML = `
+          <div class="fb good"><div class="ttl">Un plan possible — ${s}</div>
+          <p><b>Position :</b> une interdiction générale traite le symptôme et manque la cause, mais un encadrement strict est nécessaire.</p>
+          <p><b>Concession :</b> il est vrai que la présence du téléphone fragmente l’attention et facilite le harcèlement entre élèves.</p>
+          <p><b>Argument 1 — l’efficacité :</b> une règle qui ne peut pas être appliquée partout se contourne et perd son autorité ; l’exemple des établissements qui ont dû revenir sur une interdiction totale le montre.</p>
+          <p><b>Argument 2 — l’éducation :</b> l’école prépare à une vie où l’outil sera partout ; apprendre à s’en servir vaut mieux que le retirer pendant six heures par jour.</p>
+          <p><b>Argument 3 — l’égalité, le plus fort :</b> pour certains élèves, le téléphone est le seul outil numérique disponible à la maison ; l’interdire sans alternative creuse l’écart au lieu de le réduire.</p>
+          <p><b>Ouverture :</b> la vraie question n’est peut-être pas l’objet, mais ce que l’école propose à la place de l’attention qu’il capte.</p></div>
+          <div class="fb"><div class="ttl">Vérifie ton plan</div>
+          <p>Six points : ta position est-elle annoncée clairement ? La concession est-elle sincère, c’est-à-dire réellement gênante pour toi ? Chaque argument est-il différent des autres, et pas la même idée reformulée ? Chaque exemple est-il concret et vérifiable ? Ton argument le plus fort est-il en dernier ? Ton ouverture pose-t-elle une vraie question, plutôt que de répéter l’introduction ?</p></div>`;
+        };
+      };
+    });
+  }
+},
+
+niveaux: [
+{
+  titre: "Le vocabulaire de l’argumentation",
+  objectif: "Nommer précisément chaque pièce d’un texte qui défend une idée.",
+  rappel: `
+    <p>Un texte argumentatif est une machine à cinq pièces. Les nommer sert à deux choses : les repérer dans le texte qu’on te donne, et ne pas en oublier dans le texte que tu écris.</p>
+    <ul>
+      <li>Le <b>thème</b> est le sujet dont on parle. « Le service militaire », par exemple.</li>
+      <li>La <b>thèse</b> est ce que l’auteur veut te faire admettre à ce propos.</li>
+      <li>Un <b>argument</b> est une raison, une idée générale qui soutient la thèse.</li>
+      <li>Un <b>exemple</b> est un cas particulier, concret, qui rend l’argument palpable.</li>
+      <li>La <b>thèse adverse</b> est l’opinion contre laquelle l’auteur écrit ; la <b>réfuter</b>, c’est montrer qu’elle ne tient pas.</li>
+    </ul>
+    <p>Une distinction que les correcteurs regardent de près : <b>convaincre</b> s’adresse à la raison par des arguments, tandis que <b>persuader</b> s’adresse aux émotions par le ton, les images, l’indignation. Les deux sont légitimes, mais une copie qui ne fait que persuader n’a rien démontré.</p>
+    <p>Un texte peut enfin <b>délibérer</b> : peser le pour et le contre avant de trancher. C’est souvent la forme la plus solide, à condition de trancher pour de bon à la fin.</p>`,
+  questions: [
+    { type:"qcm", enonce:"Dans un texte argumentatif, la thèse est :",
+      options:["l’opinion que l’auteur défend","le sujet dont le texte parle","le cas concret qui illustre le propos","la première phrase du texte"], correct:0,
+      indice:"Le sujet et l’opinion sur ce sujet sont deux choses différentes.",
+      solution:"L’opinion que l’auteur défend.",
+      explication:"La thèse est une prise de position : on doit pouvoir être d’accord ou non avec elle. « Les transports en commun » n’est pas une thèse, c’est un thème ; « les transports en commun devraient être gratuits » en est une." },
+
+    { type:"qcm", enonce:"« Beaucoup de jeunes trouvent leur premier emploi grâce à un stage : mon voisin a été engagé après le sien. » Dans cette phrase, la mention du voisin est :",
+      options:["un exemple qui illustre l’argument","l’argument lui-même","la thèse du texte","une concession faite à l’adversaire"], correct:0,
+      indice:"Un cas particulier ne démontre rien à lui seul. Quelle est sa fonction, alors ?",
+      solution:"Un exemple qui illustre l’argument.",
+      explication:"L’argument est l’idée générale : les stages débouchent souvent sur un emploi. Le voisin n’est qu’un cas concret qui la rend vivante. Beaucoup de copies confondent les deux et enchaînent les histoires personnelles en croyant démontrer — un correcteur y voit au contraire une absence d’argument." },
+
+    { type:"vf", enonce:"« Convaincre » s’adresse à la raison, « persuader » s’adresse aux émotions.", correct:true,
+      indice:"Pense à la différence entre une démonstration et un discours qui te touche.",
+      explication:"C’est exactement la distinction attendue. Convaincre passe par des arguments et des faits ; persuader passe par le ton, les images, l’émotion. À l’écrit d’examen, on te demande d’abord de convaincre." },
+
+    { type:"qcm", enonce:"Un auteur écrit : « Certes, une taxe sur les emballages coûterait davantage aux ménages modestes. Mais un système de remboursement corrige entièrement cet effet. » La première phrase est :",
+      options:["une concession","une réfutation","un exemple","sa thèse"], correct:0,
+      indice:"L’auteur commence par donner raison à quelqu’un. Combien de temps ?",
+      solution:"Une concession.",
+      explication:"Concéder, c’est accorder un point à l’adversaire pour mieux le dépasser ensuite — d’où le « mais » qui suit toujours. C’est une des marques d’une copie mûre : montrer qu’on a vu l’objection est plus fort que faire comme si elle n’existait pas." },
+
+    { type:"qcm", enonce:"Réfuter une thèse adverse, c’est :",
+      options:["montrer par un raisonnement qu’elle ne tient pas","la citer avant de passer à autre chose","la reformuler plus clairement que son auteur","affirmer le contraire avec force"], correct:0,
+      indice:"Le mot contient l’idée d’un travail à faire, pas seulement d’une opposition à afficher.",
+      solution:"Montrer par un raisonnement qu’elle ne tient pas.",
+      explication:"Réfuter suppose un travail : on prend l’argument adverse au sérieux et on en montre la faille. Affirmer le contraire plus fort n’est pas une réfutation, c’est un bras de fer — et le correcteur le voit immédiatement." },
+
+    { type:"multi", enonce:"Coche les énoncés qui sont des thèses (des opinions discutables), et pas autre chose.",
+      options:["Le permis de conduire devrait être gratuit pour les demandeurs d’emploi.","Le sport à l’école mérite plus d’heures qu’on ne lui en accorde.","La Belgique compte trois régions.","Le film dure deux heures et quart."],
+      corrects:[0,1],
+      indice:"Une thèse peut être contestée. Un fait vérifiable ne se conteste pas, il se vérifie.",
+      socratique:"Demande-toi pour chaque phrase : puis-je être en désaccord avec elle sans être dans l’erreur ?",
+      solution:"Les deux énoncés qui prennent position : la gratuité du permis et les heures de sport.",
+      explication:"La gratuité du permis et le nombre d’heures de sport sont des prises de position : on peut les contester sans être dans l’erreur. Le nombre de régions belges et la durée d’un film sont des faits vérifiables ; ils peuvent servir d’appui à un raisonnement, mais ils ne se défendent pas. Confondre les deux mène à une copie qui décrit au lieu d’argumenter." },
+
+    { type:"ordre", enonce:"Remets dans l’ordre les cinq éléments d’un paragraphe argumentatif bien construit.",
+      melange:["L’exemple concret qui rend l’argument palpable","Le connecteur qui relie au paragraphe précédent","L’argument, énoncé en une phrase claire","La phrase de bilan qui relie l’argument à la thèse","L’explication : pourquoi cet argument tient"],
+      rang:[3,0,1,4,2],
+      indice:"On annonce, on explique, on illustre, on conclut. Reste à savoir ce qui vient tout au début.",
+      socratique:"L’exemple ne peut pas précéder l’idée qu’il illustre, et le bilan ne peut venir qu’en dernier.",
+      solution:"Connecteur · argument · explication · exemple · bilan.",
+      explication:"Cette structure en cinq temps est ce que le correcteur cherche dans chaque paragraphe : elle prouve que tu ne juxtaposes pas des idées, tu les articules. La phrase de bilan est celle qu’on oublie le plus souvent, alors qu’elle rattache l’argument à ta thèse et évite le paragraphe qui flotte." }
+  ]
+},
+
+{
+  titre: "Les types d’arguments",
+  objectif: "Reconnaître un argument, sa nature, et savoir quand il est truqué.",
+  rappel: `
+    <p>Tous les arguments ne se ressemblent pas, et savoir les nommer aide autant à analyser un texte qu’à varier les siens.</p>
+    <ul>
+      <li><b>Argument logique</b> — un enchaînement de causes et de conséquences. Si A, alors B.</li>
+      <li><b>Argument d’autorité</b> — on s’appuie sur une source reconnue : une étude, un spécialiste, une institution.</li>
+      <li><b>Argument par analogie</b> — on compare la situation à une autre, mieux connue, pour l’éclairer.</li>
+      <li><b>Argument de valeur</b> — on invoque un principe : la justice, la liberté, l’égalité, la dignité.</li>
+      <li><b>Argument par l’expérience</b> — on s’appuie sur des faits observés, des chiffres, du vécu.</li>
+    </ul>
+    <p>Certains raisonnements ont l’air d’arguments sans en être. Les deux plus fréquents : la <b>généralisation hâtive</b>, qui tire une règle d’un ou deux cas, et l’<b>attaque de la personne</b>, qui vise celui qui parle plutôt que ce qu’il dit. Les repérer chez l’adversaire est une force ; les éviter chez soi est une nécessité.</p>`,
+  questions: [
+    { type:"qcm", enonce:"« Selon une étude de l’Université de Liège menée sur dix ans, les élèves qui redoublent ne rattrapent pas leur retard. » Quel type d’argument ?",
+      options:["Un argument d’autorité","Un argument par analogie","Un argument de valeur","Une attaque de la personne"], correct:0,
+      indice:"Sur quoi repose la force de la phrase : sur un raisonnement, ou sur celui qui la garantit ?",
+      solution:"Un argument d’autorité.",
+      explication:"L’auteur s’appuie sur une source reconnue pour donner du poids à son affirmation. C’est efficace, à condition que la source soit réelle et citée précisément : une étude vague (« des études montrent que… ») ne convainc personne et peut même se retourner contre toi." },
+
+    { type:"qcm", enonce:"« Fermer la seule ligne de bus du village, c’est retirer l’échelle d’une piscine en disant aux gens qu’ils peuvent toujours nager. » Quel type d’argument ?",
+      options:["Un argument par analogie","Un argument logique","Un argument d’autorité","Un argument par l’expérience"], correct:0,
+      indice:"L’auteur parle d’autre chose que du bus pendant un instant. Pourquoi ?",
+      solution:"Un argument par analogie.",
+      explication:"La comparaison éclaire la situation en la transposant dans un domaine plus concret. L’analogie est frappante et facile à retenir, mais elle ne prouve rien à elle seule : à l’examen, place-la après un argument solide, jamais à la place de celui-ci." },
+
+    { type:"qcm", enonce:"« Deux personnes de ma classe ont trouvé un emploi sans diplôme : le diplôme ne sert donc à rien. » Que reproche-t-on à ce raisonnement ?",
+      options:["Il généralise à partir de deux cas isolés","Il attaque la personne au lieu de l’argument","Il s’appuie sur une autorité mal identifiée","Il invoque une valeur au lieu d’un fait"], correct:0,
+      indice:"Compte le nombre de cas, puis regarde l’étendue de la conclusion.",
+      solution:"Il généralise à partir de deux cas isolés.",
+      explication:"Deux cas ne fondent pas une règle : c’est la généralisation hâtive, l’erreur la plus fréquente dans les copies. La parade est simple — un exemple vient toujours après un argument général, jamais à sa place." },
+
+    { type:"qcm", enonce:"« Cet économiste défend une réforme des retraites ? Il a lui-même une belle pension, il peut bien parler. » Ce raisonnement est :",
+      options:["une attaque de la personne, qui ne dit rien de la réforme","une réfutation solide de la réforme","un argument de valeur sur la justice sociale","un argument par l’expérience"], correct:0,
+      indice:"La phrase parle-t-elle de la réforme, ou de celui qui la propose ?",
+      solution:"Une attaque de la personne.",
+      explication:"La situation personnelle de l’économiste ne rend sa réforme ni bonne ni mauvaise : pour la réfuter, il faudrait s’en prendre à son contenu. Ce procédé se repère facilement dans un texte, et il coûte cher quand il apparaît dans une copie." },
+
+    { type:"qcm", enonce:"« Une société qui laisse ses aînés sans soins abandonne le principe même qui la fonde : personne ne doit être laissé de côté. » Quel type d’argument ?",
+      options:["Un argument de valeur","Un argument par l’expérience","Un argument d’autorité","Une généralisation hâtive"], correct:0,
+      indice:"L’auteur ne cite ni chiffre ni source. Sur quoi s’appuie-t-il alors ?",
+      solution:"Un argument de valeur.",
+      explication:"L’auteur invoque un principe partagé — la solidarité — plutôt qu’un fait mesurable. Ce type d’argument porte fort en conclusion, mais une copie qui n’en contient que de ce genre reste une déclaration d’intention : il faut l’adosser à des faits." },
+
+    { type:"multi", enonce:"Tu défends l’idée que les transports scolaires devraient être gratuits. Coche les phrases qui sont de vrais arguments.",
+      options:["La gratuité supprime un frein financier au maintien à l’école pour les familles modestes.","Le coût du transport pèse plus lourd dans les zones rurales, où l’offre scolaire est éloignée.","Ceux qui s’y opposent n’ont manifestement jamais pris un bus de leur vie.","Ma cousine a arrêté ses études parce que le bus coûtait trop cher."],
+      corrects:[0,1],
+      indice:"Un vrai argument est une idée générale. Une histoire particulière et une pique sur les adversaires n’en sont pas.",
+      socratique:"Deux de ces phrases pourraient figurer dans un rapport. Les deux autres non — pourquoi ?",
+      solution:"La phrase sur le frein financier et celle sur le poids du coût en zone rurale.",
+      explication:"Ces deux phrases énoncent des raisons générales, qui valent au-delà d’un cas particulier. La remarque sur ceux qui n’auraient jamais pris le bus attaque les personnes plutôt que leurs idées, et l’histoire de la cousine est un exemple : elle serait excellente juste après un argument, mais elle ne peut pas en tenir lieu." },
+
+    { type:"vf", revision:true, enonce:"Rappel du niveau 1 : une concession consiste à accorder un point à l’avis opposé avant de le dépasser.", correct:true,
+      indice:"Repense à la structure « certes… mais ».",
+      explication:"C’est bien cela, et c’est ce qui distingue une copie nuancée d’un texte à sens unique. La concession doit rester une étape : sans le « mais » qui suit, tu as simplement changé d’avis au milieu de ta copie." }
+  ]
+},
+
+{
+  titre: "Les connecteurs logiques",
+  objectif: "Rendre visible le raisonnement grâce aux mots de liaison.",
+  rappel: `
+    <p>Les connecteurs sont les panneaux de signalisation de ton texte. Un correcteur qui ne les trouve pas doit deviner ton raisonnement — et il ne devine pas, il enlève des points.</p>
+    <table>
+      <tr><th>Relation</th><th>Exemples</th></tr>
+      <tr><td>Ajouter une idée</td><td>de plus, en outre, par ailleurs</td></tr>
+      <tr><td>Opposer</td><td>mais, cependant, toutefois, en revanche</td></tr>
+      <tr><td>Donner la cause</td><td>car, parce que, en effet, puisque</td></tr>
+      <tr><td>Donner la conséquence</td><td>donc, ainsi, par conséquent, c’est pourquoi</td></tr>
+      <tr><td>Illustrer</td><td>par exemple, notamment, en particulier</td></tr>
+      <tr><td>Conclure</td><td>en définitive, pour finir, en somme</td></tr>
+    </table>
+    <p>Deux pièges classiques. D’abord la <b>cause et la conséquence se confondent</b> facilement : « il pleut, donc la route est mouillée » ne dit pas la même chose que « la route est mouillée, car il pleut », même si les deux phrases sont vraies. Ensuite, on <b>répète le même connecteur</b> : trois « de plus » à la suite donnent une liste, pas une démonstration.</p>`,
+  questions: [
+    { type:"qcm", enonce:"« La bibliothèque ferme désormais à 17 h. … les étudiants qui travaillent en journée n’y ont plus accès. » Quel connecteur convient ?",
+      options:["Par conséquent","Par exemple","En revanche","Certes"], correct:0,
+      indice:"La deuxième phrase est-elle une cause, une conséquence, ou une objection ?",
+      solution:"« Par conséquent ».",
+      explication:"La fermeture précoce entraîne l’exclusion des étudiants : c’est un rapport de conséquence. « Par exemple » annoncerait une illustration, « en revanche » une opposition, et « certes » une concession — trois relations qui n’existent pas ici." },
+
+    { type:"saisie", enonce:"Complète avec un connecteur de cause en trois lettres : « Le projet a été abandonné, … il coûtait trop cher. »",
+      reponses:["car"], placeholder:"trois lettres",
+      indice:"C’est le mot de cause le plus court de la langue française.",
+      socratique:"Il commence par la lettre c et il introduit une explication.",
+      solution:"« Car ».",
+      explication:"« Car » introduit la cause, exactement comme « parce que » : la deuxième phrase explique la première. Retiens la différence de place — « car » relie deux propositions au milieu de la phrase et ne peut jamais la commencer." },
+
+    { type:"qcm", enonce:"« Certes, ce dispositif coûte cher à mettre en place. Mais il évite des dépenses bien supérieures dans dix ans. » Quelle relation ces deux phrases entretiennent-elles ?",
+      options:["Une concession suivie d’une opposition","Une cause suivie de sa conséquence","Une idée suivie de son illustration","Deux idées qui s’additionnent"], correct:0,
+      indice:"Le couple « certes… mais » a un nom précis dans le vocabulaire de l’argumentation.",
+      solution:"Une concession suivie d’une opposition.",
+      explication:"« Certes » accorde un point à l’adversaire, « mais » reprend aussitôt la main : c’est le mouvement de concession. Écrire « certes » sans le « mais » qui suit laisse le lecteur croire que tu as changé de camp." },
+
+    { type:"multi", enonce:"Tu enchaînes ton deuxième argument après le premier. Coche les connecteurs qui conviennent.",
+      options:["Par ailleurs","En outre","Or","Par exemple"],
+      corrects:[0,1],
+      indice:"Deux de ces mots ajoutent une idée de même nature. Les deux autres font autre chose.",
+      socratique:"Que se passe-t-il si tu ouvres ton deuxième argument par « or » ? Le lecteur attend un renversement qui ne viendra pas.",
+      solution:"« Par ailleurs » et « en outre ».",
+      explication:"Ces deux connecteurs ajoutent un argument de même sens, ce qui est exactement ta situation. « Or » annonce un renversement du raisonnement et « par exemple » une illustration : les employer ici donnerait au correcteur une fausse indication sur la suite." },
+
+    { type:"qcm", enonce:"Laquelle de ces phrases emploie le connecteur correctement ?",
+      options:["Les loyers ont augmenté ; par conséquent, la demande de logements sociaux a explosé.","Les loyers ont augmenté ; par exemple, la demande de logements sociaux a explosé.","Les loyers ont augmenté ; en revanche, la demande de logements sociaux a explosé.","Les loyers ont augmenté ; certes, la demande de logements sociaux a explosé."], correct:0,
+      indice:"Demande-toi si la seconde information découle de la première, l’illustre, ou s’y oppose.",
+      solution:"La version employant « par conséquent ».",
+      explication:"La hausse des loyers entraîne la demande de logements sociaux : c’est bien une conséquence. La demande de logements n’est pas un exemple de hausse des loyers, elle ne s’y oppose pas non plus, et il n’y a ici rien à concéder." },
+
+    { type:"saisie", enonce:"Complète par un connecteur de conclusion : « Les trois arguments convergent. … , l’aide au permis de conduire devrait être maintenue. » (deux mots)",
+      reponses:["en definitive","en définitive","en somme","en conclusion","par consequent","par conséquent","pour finir","au final"],
+      placeholder:"deux mots",
+      indice:"Tu cherches le mot qui annonce que tu vas clore ta démonstration.",
+      socratique:"Pense aux formules qui ouvrent le dernier paragraphe d’un texte argumentatif.",
+      solution:"« En définitive » (ou « en somme », « en conclusion »).",
+      explication:"Ces formules annoncent que la démonstration est close et que tu passes au bilan. Évite « pour conclure, je dirais que », qui affaiblit la fin par une hésitation, et n’ouvre jamais ta conclusion sur un connecteur d’opposition." },
+
+    { type:"qcm", enonce:"Un élève écrit : « De plus, le sport développe l’esprit d’équipe. De plus, il améliore la santé. De plus, il occupe les jeunes le week-end. » Que faut-il corriger ?",
+      options:["Varier les connecteurs, car la répétition transforme la démonstration en liste","Supprimer tous les connecteurs, ils sont inutiles","Remplacer chaque « de plus » par « donc »","Regrouper les trois idées dans une seule phrase"], correct:0,
+      indice:"Les trois idées sont bonnes. Le problème est ailleurs.",
+      solution:"Varier les connecteurs.",
+      explication:"La répétition donne l’impression d’un inventaire où toutes les idées se valent, alors qu’une démonstration progresse. Alterner « par ailleurs », « en outre », « plus décisif encore » hiérarchise les arguments et montre que tu construis, plutôt que d’empiler." }
+  ]
+},
+
+{
+  titre: "Analyser un texte argumentatif",
+  objectif: "Démonter le raisonnement d’un auteur, comme le demande l’épreuve.",
+  rappel: `
+    <p>Analyser un texte, c’est répondre dans l’ordre à cinq questions, toujours les mêmes.</p>
+    <ol>
+      <li><b>De quoi parle-t-il ?</b> Le thème.</li>
+      <li><b>Que veut-il me faire admettre ?</b> La thèse.</li>
+      <li><b>Contre qui écrit-il ?</b> La thèse adverse, souvent citée dès les premières lignes.</li>
+      <li><b>Comment s’y prend-il ?</b> Les arguments et leur type.</li>
+      <li><b>Avec quel ton ?</b> Neutre, indigné, ironique.</li>
+    </ol>
+    <p>Deux procédés à savoir nommer, parce qu’ils reviennent sans cesse. La <b>question rhétorique</b> est une question dont la réponse est imposée par la façon dont elle est posée : elle fait participer le lecteur sans lui laisser le choix. L’<b>ironie</b> consiste à dire le contraire de ce qu’on pense, pour que le lecteur rétablisse lui-même le vrai sens ; c’est efficace, mais dangereux dans une copie, car une ironie mal signalée se lit au premier degré.</p>`,
+  questions: [
+    { type:"qcm",
+      source:"<b>Texte</b><br>On entend partout que les jeunes ne lisent plus. L’affirmation a le mérite d’être simple ; elle a le défaut d’être fausse. Un adolescent qui passe deux heures par jour à lire des messages, des articles partagés, des sous-titres et des forums lit davantage de texte, en volume, que son grand-père au même âge.<br><br>Ce qui a changé n’est donc pas la quantité, mais la forme. Nous appelons « lecture » un exercice bien particulier : suivre une pensée longue, écrite par une seule personne, pendant des heures. Cet exercice-là recule, et il faut le dire — mais le confondre avec la lecture en général nous empêche de comprendre ce qui se passe.<br><br>Faut-il alors se réjouir ? Certainement pas. La capacité à suivre un raisonnement long est précisément ce qui permet de résister aux arguments courts. En cessant de l’entraîner, une société ne perd pas un loisir : elle perd un moyen de défense.",
+      enonce:"Quelle est la thèse défendue par l’auteur ?",
+      options:["Ce n’est pas la lecture qui recule, mais un certain type de lecture, et cette perte est grave","Les jeunes lisent beaucoup plus que les générations précédentes, tout va bien","Il faut interdire les écrans pour sauver la lecture longue","Les jeunes ne lisent plus, comme on l’entend partout"], correct:0,
+      indice:"L’auteur corrige une idée reçue, puis refuse la conclusion rassurante qu’on pourrait en tirer. Les deux mouvements font sa thèse.",
+      solution:"Ce n’est pas la lecture qui recule, mais un certain type de lecture, et cette perte est grave.",
+      explication:"L’auteur avance en deux temps : il réfute d’abord l’idée reçue, puis refuse explicitement de s’en réjouir. S’arrêter au premier temps donne une thèse optimiste qu’il rejette lui-même — et l’interdiction des écrans n’apparaît nulle part dans le texte." },
+
+    { type:"qcm",
+      source:"<b>Rappel du texte</b><br>« On entend partout que les jeunes ne lisent plus. L’affirmation a le mérite d’être simple ; elle a le défaut d’être fausse. »",
+      enonce:"Quelle est la fonction de ces deux premières phrases ?",
+      options:["Énoncer la thèse adverse pour la réfuter aussitôt","Annoncer la thèse de l’auteur","Donner un exemple concret","Faire une concession à l’adversaire"], correct:0,
+      indice:"L’auteur est-il d’accord avec ce qu’il rapporte dans la première phrase ?",
+      solution:"Énoncer la thèse adverse pour la réfuter aussitôt.",
+      explication:"« On entend partout que » signale toujours un discours rapporté, que l’auteur va contester. Il ne concède rien ici, puisqu’il ne lui accorde aucun point : il le déclare faux dès la phrase suivante." },
+
+    { type:"qcm",
+      source:"<b>Rappel du texte</b><br>« Faut-il alors se réjouir ? Certainement pas. »",
+      enonce:"Comment s’appelle ce procédé ?",
+      options:["Une question rhétorique","Une concession","Une analogie","Une généralisation"], correct:0,
+      indice:"L’auteur attend-il vraiment une réponse de son lecteur ?",
+      solution:"Une question rhétorique.",
+      explication:"L’auteur pose une question dont il donne immédiatement la réponse : elle sert à relancer le texte et à impliquer le lecteur. Bien employé, ce procédé articule un texte ; multiplié, il donne une copie qui interroge sans jamais démontrer." },
+
+    { type:"qcm",
+      source:"<b>Rappel du texte</b><br>« La capacité à suivre un raisonnement long est précisément ce qui permet de résister aux arguments courts. En cessant de l’entraîner, une société ne perd pas un loisir : elle perd un moyen de défense. »",
+      enonce:"Quel type d’argument l’auteur emploie-t-il ici ?",
+      options:["Un argument logique, qui déduit une conséquence collective","Un argument d’autorité","Un argument par analogie","Un argument par l’expérience personnelle"], correct:0,
+      indice:"Cherche l’enchaînement : si telle capacité disparaît, alors quoi ?",
+      solution:"Un argument logique.",
+      explication:"L’auteur enchaîne une cause et sa conséquence : la lecture longue permet de résister aux arguments courts, donc son recul affaiblit la société. Il ne cite aucune source, ne compare à rien et ne raconte aucun cas vécu — le raisonnement se suffit à lui-même." },
+
+    { type:"multi",
+      enonce:"Tu dois rédiger l’analyse de ce texte. Coche les éléments qui doivent y figurer.",
+      options:["La thèse de l’auteur, formulée avec tes mots","La thèse adverse qu’il combat","Les procédés qu’il emploie et leur effet","Ton avis personnel sur les jeunes et la lecture"],
+      corrects:[0,1,2],
+      indice:"Une analyse décrit le fonctionnement du texte. Où ta propre opinion a-t-elle sa place ?",
+      socratique:"Trois de ces éléments parlent du texte. Le quatrième parle de toi.",
+      solution:"La thèse, la thèse adverse et les procédés.",
+      explication:"L’analyse porte sur le fonctionnement du texte : ce qu’il défend, contre quoi, et par quels moyens. Ton opinion est attendue dans la partie argumentation de l’épreuve, où elle vaudra des points ; ici, elle en fait perdre." },
+
+    { type:"qcm", revision:true,
+      enonce:"Rappel du niveau 2 : « Trois amis à moi ont arrêté de lire des romans, la lecture longue est donc morte. » Quel défaut ?",
+      options:["Une généralisation hâtive","Une attaque de la personne","Un argument d’autorité mal employé","Une concession mal placée"], correct:0,
+      indice:"Compte les cas, puis regarde l’ampleur de la conclusion.",
+      solution:"Une généralisation hâtive.",
+      explication:"Trois cas ne fondent pas un constat de société. Pour tenir, la même idée devrait s’appuyer sur une enquête ou une statistique, l’exemple des trois amis venant seulement l’illustrer ensuite." },
+
+    { type:"qcm",
+      enonce:"Dans un autre texte, un auteur écrit : « Bravo aux responsables : grâce à eux, nous avons enfin des écoles sans budget et des professeurs sans remplaçants. » Ce procédé est :",
+      options:["l’ironie : il dit le contraire de ce qu’il pense","un argument d’autorité","une concession sincère","un compliment justifié"], correct:0,
+      indice:"Un compliment suivi d’un constat désastreux : les deux vont-ils ensemble ?",
+      solution:"L’ironie.",
+      explication:"L’éloge apparent contredit le contenu de la phrase, et le lecteur rétablit de lui-même le vrai sens : c’est l’ironie. À l’examen, sache la reconnaître dans un texte, mais méfie-toi de l’employer dans le tien — mal signalée, elle sera lue au premier degré." }
+  ]
+},
+
+{
+  titre: "Construire ton propre texte",
+  objectif: "Passer du brouillon à une copie structurée, dans le temps imparti.",
+  rappel: `
+    <p>Une copie d’argumentation se joue au brouillon. Un quart d’heure de plan évite l’heure de dérive qui suit une première phrase écrite au hasard.</p>
+    <p>L’<b>introduction</b> tient en trois temps : une phrase qui entre dans le sujet, la question précise à laquelle tu vas répondre, l’annonce de ta position. Elle ne contient aucun argument — ils viennent ensuite.</p>
+    <p>Le <b>développement</b> avance par paragraphes, un argument chacun, du plus faible au plus fort. Le lecteur doit sentir que ça monte.</p>
+    <p>La <b>conclusion</b> fait le bilan de ce que tu as démontré, sans introduire d’argument neuf, puis ouvre sur une question plus large.</p>
+    <p>Un mot sur le <b>registre</b> : l’écrit d’examen se rédige en langue courante ou soutenue. On écrit « de nombreux jeunes rencontrent des difficultés », pas « les jeunes galèrent grave ». Ce n’est pas une question de politesse, c’est un critère de correction.</p>`,
+  questions: [
+    { type:"ordre", enonce:"Remets dans l’ordre les six parties d’une copie d’argumentation bien construite.",
+      melange:["Argument 2, accompagné de son exemple","Introduction : entrée en matière, question, position annoncée","Conclusion : bilan puis ouverture","Concession : ce que tu accordes à l’avis opposé","Argument 3, le plus fort","Argument 1, accompagné de son exemple"],
+      rang:[3,0,5,1,4,2],
+      indice:"On accorde d’abord quelque chose à l’adversaire, puis on déploie ses propres raisons en montant en puissance.",
+      socratique:"La concession se place juste après l’introduction : elle désarme l’objection avant que le lecteur ne la formule.",
+      solution:"Introduction · concession · argument 1 · argument 2 · argument 3 · conclusion.",
+      explication:"Placer la concession tôt désamorce l’objection qui traînerait dans la tête du lecteur pendant toute ta démonstration. Garder l’argument le plus fort pour la fin laisse au correcteur l’impression d’un raisonnement qui monte, juste avant qu’il ne pose sa note." },
+
+    { type:"multi", enonce:"Coche ce que doit contenir ton introduction.",
+      options:["Une phrase d’entrée qui situe le sujet","La question précise à laquelle tu réponds","L’annonce de ta position","Ton premier argument développé"],
+      corrects:[0,1,2],
+      indice:"L’introduction annonce ; elle ne démontre pas encore.",
+      socratique:"Si tu développes déjà un argument, que restera-t-il au premier paragraphe du développement ?",
+      solution:"L’entrée en matière, la question et l’annonce de ta position.",
+      explication:"Ces trois éléments suffisent, et leur ordre est presque toujours celui-là. Développer un argument dès l’introduction déséquilibre la copie : l’argument perd sa place et le développement commence en répétant ce qui est déjà dit." },
+
+    { type:"qcm",
+      source:"« Le sport à l’école est important. Il permet de se dépenser, ce qui est bien pour la santé. Beaucoup d’élèves n’aiment pas ça, mais c’est comme ça. Mon frère déteste le cours de gym. Donc il faudrait plus d’heures de sport. »",
+      enonce:"Quel est le principal défaut de ce paragraphe ?",
+      options:["Les idées ne s’enchaînent pas : l’exemple contredit la conclusion au lieu de la soutenir","Il est trop long pour un seul paragraphe","Il emploie un registre trop soutenu","Il ne contient aucun exemple"], correct:0,
+      indice:"Lis la dernière phrase, puis remonte : qu’est-ce qui la prépare ?",
+      solution:"Les idées ne s’enchaînent pas.",
+      explication:"L’exemple du frère qui déteste la gym va contre la conclusion réclamant plus d’heures de sport : le paragraphe se contredit. Le « donc » final ne découle de rien, et un connecteur logique qui ne relie rien signale au correcteur que le raisonnement n’a pas été construit avant d’écrire." },
+
+    { type:"qcm", enonce:"Quelle conclusion est la meilleure pour un texte défendant la gratuité des transports scolaires ?",
+      options:["Le coût du transport pèse donc sur les choix scolaires des familles modestes ; la gratuité lève cet obstacle sans en créer d’autre. Reste à savoir jusqu’où la collectivité accepte de porter ce qui relève de l’égalité devant l’école.","Voilà, j’ai montré que les transports scolaires devraient être gratuits, et j’espère vous avoir convaincu de ma position sur ce sujet important.","Enfin, il faut aussi penser que la gratuité réduirait la circulation automobile aux abords des écoles, ce qui serait un avantage supplémentaire considérable.","Pour toutes ces raisons, la gratuité des transports scolaires est nécessaire. Les transports scolaires devraient donc être gratuits pour tous les élèves."], correct:0,
+      indice:"Une bonne conclusion fait deux choses : elle referme la démonstration, puis elle ouvre.",
+      solution:"La conclusion qui fait le bilan puis pose une question plus large.",
+      explication:"Elle résume le trajet parcouru et ouvre sur une question que le texte n’a pas tranchée : c’est exactement ce qu’on attend. Commenter son propre travail, introduire un argument neuf ou répéter deux fois la même phrase sont trois façons distinctes de perdre des points dans les dernières lignes." },
+
+    { type:"qcm", enonce:"Tu écris dans ta copie : « Franchement, ce système est complètement nul et les gens en ont marre. » Que faut-il corriger ?",
+      options:["Le registre : cette phrase relève de l’oral, pas d’un écrit d’examen","Rien : la phrase est claire et directe","La ponctuation, qui manque de virgules","La longueur : la phrase est trop courte"], correct:0,
+      indice:"Imagine cette phrase dans un article de journal sérieux. Passerait-elle ?",
+      solution:"Le registre est trop familier.",
+      explication:"« Franchement », « nul », « en avoir marre » appartiennent à la langue parlée : à l’écrit, on écrira que le dispositif est inefficace et suscite un mécontentement croissant. Le registre est un critère explicite de correction, et il se corrige vite une fois qu’on y prête attention." },
+
+    { type:"nombre", enonce:"L’épreuve dure 3 heures. Tu prévois 1 h 25 pour le résumé et 20 minutes de relecture finale. Combien de minutes reste-t-il pour l’argumentation ?",
+      reponse:75, tolerance:0, placeholder:"nombre de minutes",
+      indice:"Convertis d’abord tout en minutes, puis fais la soustraction dans le champ.",
+      socratique:"Trois heures font 180 minutes. Enlève 85 minutes, puis 20.",
+      solution:"75 minutes.",
+      explication:"180 − 85 − 20 = 75 minutes, soit environ un quart d’heure de plan et une heure de rédaction. Faire ce calcul chez toi, avant l’examen, évite de le découvrir le jour même : la copie ratée est presque toujours celle où le temps a été mal réparti, pas celle où les idées manquaient." },
+
+    { type:"vf", revision:true, enonce:"Rappel du niveau 3 : ouvrir trois paragraphes de suite par « de plus » est un bon moyen de montrer que tes arguments s’additionnent.", correct:false,
+      indice:"Une démonstration progresse-t-elle, ou s’empile-t-elle ?",
+      explication:"La répétition transforme la démonstration en liste et laisse croire que tous les arguments ont le même poids. Varie les connecteurs et garde les formules les plus fortes pour le dernier argument, celui qui doit rester en tête au moment de la note." }
+  ]
+}
+]
+};
+
+/* ============================================================
+   Rotation déterministe des propositions (convention 3.7)
+   La bonne réponse est rédigée en position 0 puis déplacée,
+   afin qu'elle ne soit jamais toujours au même endroit.
+   ============================================================ */
+const DECALAGE = [2,0,3,1, 1,3,0,2, 3,1,2,0, 0,2,1,3, 2,3,0,1];
+(function melangerPropositions(liste){
+  let k = 0;
+  liste.forEach(q => {
+    if(!q.options || q.options.length < 3) return;
+    if(q.type === 'qcm'){
+      const t = DECALAGE[k++ % DECALAGE.length];
+      for(let n = 0; n < t; n++){
+        q.options.unshift(q.options.pop());
+        q.correct = (q.correct + 1) % q.options.length;
+      }
+    } else if(q.type === 'multi'){
+      const t = DECALAGE[k++ % DECALAGE.length];
+      for(let n = 0; n < t; n++){
+        q.options.unshift(q.options.pop());
+        q.corrects = q.corrects.map(c => (c + 1) % q.options.length);
+      }
+    }
+  });
+})(APP.niveaux.flatMap(n => n.questions));
+
+/* ============================================================
+   État (aucune donnée n'est enregistrée ni envoyée : outil autonome)
+   ============================================================ */
+const S = { ecran:'accueil', niv:0, iq:0, essais:0, indice:false, sel:null,
+            multi:[], ordre:[], flags:[], streak:0, total:0, res:{}, pred:{}, debloque:0 };
+
+const $ = id => document.getElementById(id);
+const app = $('app');
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const nbQ = i => APP.niveaux[i].questions.length;
+const totalQ = APP.niveaux.reduce((a,n)=>a+n.questions.length,0);
+
+function normalise(s){
+  return String(s).toLowerCase().trim().replace(/[’']/g,"'").replace(/\s+/g,' ').replace(/[.;:!?]+$/,'');
+}
+function sansAccents(s){ return normalise(s).normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+
+function majHeader(){
+  let ok1 = 0;
+  Object.values(S.res).forEach(r => r.statuts.forEach(s => { if(s === 'ok1') ok1++; }));
+  $('hScore').textContent = ok1;
+  $('hStreak').textContent = S.streak;
+  let faits = 0;
+  Object.values(S.res).forEach(r => faits += r.statuts.filter(Boolean).length);
+  $('hBar').style.width = Math.round(faits / totalQ * 100) + '%';
+}
+
+/* ============================================================
+   Écran d'accueil
+   ============================================================ */
+function accueil(){
+  app.innerHTML = `
+  <div class="card" style="margin-top:22px">
+    <div class="eyebrow">Test de valorisation des acquis — français</div>
+    <h1>${APP.titre}</h1>
+    <p class="lead">${APP.intro}</p>
+    <h3>Ce que tu vas travailler</h3>
+    <ul>${APP.niveaux.map(n=>`<li><b>${n.titre}</b> — ${n.objectif}</li>`).join('')}</ul>
+    <button class="btn wide" onclick="hub()">Commencer</button>
+    <div class="row">
+      <button class="btn ghost sm" onclick="memo()">📄 Fiche mémo</button>
+      ${APP.atelier ? `<button class="btn ghost sm" onclick="atelier()">✍️ ${APP.atelier.bouton}</button>` : ''}
+    </div>
+    <p class="note">Rien n'est enregistré : ton travail reste dans cette page. Si tu la fermes, tu recommences à zéro.</p>
+  </div>`;
+  majHeader();
+}
+
+/* ============================================================
+   Hub — sélection des niveaux
+   ============================================================ */
+function etoiles(i){
+  const r = S.res[i]; if(!r || r.statuts.filter(Boolean).length < nbQ(i)) return '';
+  const p = r.statuts.filter(s=>s==='ok1').length / nbQ(i) * 100;
+  const n = p>=85?3:p>=65?2:p>=45?1:0;
+  return '<div class="stars">' + '★'.repeat(n) + '<span style="color:var(--text3)">' + '☆'.repeat(3-n) + '</span></div>';
+}
+function hub(){
+  const tousFinis = APP.niveaux.every((_,i)=> S.res[i] && S.res[i].statuts.filter(Boolean).length === nbQ(i));
+  app.innerHTML = `
+  <div class="card">
+    <h2>Choisis ton niveau</h2>
+    <p>Les niveaux vont du plus simple au plus proche de l'examen. Il faut <b>80 % de réussite du premier coup</b> pour ouvrir le suivant.</p>
+    <div class="levels">
+      ${APP.niveaux.map((n,i)=>{
+        const lock = i > S.debloque;
+        return `<button class="lvl ${lock?'lock':''}" ${lock?'disabled':''} onclick="ouvrirNiveau(${i})">
+          <div class="n">NIVEAU ${i+1}${lock?' 🔒':''}</div>
+          <div class="t">${n.titre}</div>
+          <div class="o">${n.objectif}</div>
+          ${etoiles(i)}
+        </button>`;
+      }).join('')}
+    </div>
+    <div class="row">
+      <button class="btn ghost sm" onclick="memo()">📄 Fiche mémo</button>
+      ${APP.atelier ? `<button class="btn ghost sm" onclick="atelier()">✍️ ${APP.atelier.bouton}</button>` : ''}
+      ${tousFinis ? `<button class="btn sm" onclick="bilanFinal()">🏁 Bilan complet</button>` : ''}
+    </div>
+  </div>`;
+  majHeader();
+}
+
+/* ============================================================
+   Niveau : rappel théorique -> prédiction -> questions
+   ============================================================ */
+function ouvrirNiveau(i){
+  S.niv = i; S.iq = 0;
+  if(!S.res[i]) S.res[i] = { statuts:new Array(nbQ(i)).fill(null) };
+  else S.res[i].statuts = new Array(nbQ(i)).fill(null);
+  const n = APP.niveaux[i];
+  app.innerHTML = `
+  <div class="card">
+    <div class="eyebrow">NIVEAU ${i+1} — RAPPEL</div>
+    <h2>${n.titre}</h2>
+    <p><b>Objectif :</b> ${n.objectif}</p>
+    <hr>
+    ${n.rappel}
+    <hr>
+    <p><b>Avant de commencer :</b> sur les ${nbQ(i)} questions, combien penses-tu réussir du premier coup ?</p>
+    <div class="pred">${Array.from({length:nbQ(i)+1},(_,k)=>`<button onclick="lancer(${i},${k})">${k}</button>`).join('')}</div>
+    <p class="note">Prédire son score aide à se rendre compte de ce qu'on maîtrise vraiment. Aucune mauvaise réponse ici.</p>
+    <button class="btn ghost sm wide" onclick="hub()">← Retour aux niveaux</button>
+  </div>`;
+  window.scrollTo(0,0);
+}
+function lancer(i,p){ S.pred[i] = p; S.iq = 0; question(); }
+
+/* ============================================================
+   Affichage d'une question
+   ============================================================ */
+function question(){
+  const n = APP.niveaux[S.niv], q = n.questions[S.iq];
+  S.essais = 0; S.indice = false; S.sel = null; S.multi = []; S.ordre = []; S.flags = [];
+  let corps = '';
+
+  if(q.type === 'qcm' || q.type === 'vf'){
+    const opts = q.type === 'vf' ? ['Vrai','Faux'] : q.options;
+    corps = opts.map((o,k)=>`<button class="opt" id="o${k}" onclick="repQcm(${k})">${o}</button>`).join('');
+  }
+  else if(q.type === 'multi'){
+    corps = q.options.map((o,k)=>`<button class="opt" id="o${k}" onclick="togMulti(${k})">☐ ${o}</button>`).join('')
+      + `<button class="btn wide" id="valider" onclick="repMulti()">Vérifier</button>`;
+  }
+  else if(q.type === 'ordre'){
+    corps = `<div class="slots" id="slots"><span style="color:var(--text3);font-size:.9rem">Clique les étapes dans le bon ordre…</span></div>`
+      + q.melange.map((o,k)=>`<button class="opt" id="o${k}" onclick="togOrdre(${k})">${o}</button>`).join('')
+      + `<div class="row"><button class="btn" id="valider" onclick="repOrdre()">Vérifier</button>
+         <button class="btn ghost" onclick="resetOrdre()">↺ Recommencer</button></div>`;
+  }
+  else if(q.type === 'saisie'){
+    corps = `<input type="text" id="rep" placeholder="${q.placeholder||'Ta réponse…'}" autocomplete="off"
+             onkeydown="if(event.key==='Enter')repSaisie()">
+             <button class="btn wide" id="valider" onclick="repSaisie()">Vérifier</button>`;
+  }
+  else if(q.type === 'nombre'){
+    corps = `<input type="text" id="rep" placeholder="${q.placeholder||'Un nombre…'}" autocomplete="off"
+             oninput="apercu()" onkeydown="if(event.key==='Enter')repNombre()">
+             <div class="calc" id="calc"></div>
+             <button class="btn wide" id="valider" onclick="repNombre()">Vérifier</button>
+             <p class="note">Tu peux taper un calcul (ex. <span class="mono">640/4</span>) : le résultat s'affiche avant que tu valides.</p>`;
+  }
+  else if(q.type === 'chasse'){
+    corps = `<div class="zone-tok" id="zone">${q.mots.map((m,k)=>
+        /^[.,;:!?»«()]$/.test(m) ? `<span>${esc(m)}</span>`
+        : `<span class="tok" id="t${k}" onclick="togFlag(${k})">${esc(m)}</span>`).join(' ')}</div>
+      <button class="btn wide" id="valider" onclick="repChasse()">Vérifier</button>`;
+  }
+
+  app.innerHTML = `
+  <div class="card">
+    <div class="qhead">
+      <span>NIVEAU ${S.niv+1} · QUESTION ${S.iq+1}/${nbQ(S.niv)}</span>
+      <span>${q.revision ? '<span class="tag">révision</span>' : ''}</span>
+    </div>
+    ${q.source ? `<div class="texte-source">${q.source}</div>` : ''}
+    <div class="enonce">${q.enonce}</div>
+    <div id="zoneRep">${corps}</div>
+    ${q.indice ? `<button class="btn ghost sm" id="btnIndice" onclick="voirIndice()" style="margin-top:12px">💡 Un indice</button>` : ''}
+    <div id="fb"></div>
+  </div>`;
+  window.scrollTo(0,0);
+  majHeader();
+}
+
+function voirIndice(){
+  const q = APP.niveaux[S.niv].questions[S.iq];
+  S.indice = true;
+  const b = $('btnIndice'); if(b) b.style.display = 'none';
+  $('fb').innerHTML = `<div class="fb warn"><div class="ttl">💡 Indice</div><p>${q.indice}</p></div>`;
+}
+function apercu(){
+  const v = $('rep').value;
+  const c = $('calc');
+  if(/[+\-*/×÷]/.test(v) && /^[0-9+\-*/×÷().,\s]+$/.test(v)){
+    try{
+      const expr = v.replace(/×/g,'*').replace(/÷/g,'/').replace(/,/g,'.');
+      const r = Function('"use strict";return (' + expr + ')')();
+      c.textContent = isFinite(r) ? v + '  →  = ' + (Math.round(r*100)/100).toString().replace('.',',') : '';
+    }catch(e){ c.textContent=''; }
+  } else c.textContent = '';
+}
+
+/* ---------- Interactions ---------- */
+function togMulti(k){
+  const i = S.multi.indexOf(k);
+  if(i>=0) S.multi.splice(i,1); else S.multi.push(k);
+  const b = $('o'+k);
+  b.classList.toggle('sel');
+  b.innerHTML = (S.multi.includes(k) ? '☑ ' : '☐ ') + APP.niveaux[S.niv].questions[S.iq].options[k];
+}
+function togOrdre(k){
+  if(S.ordre.includes(k)) return;
+  S.ordre.push(k);
+  $('o'+k).classList.add('sel'); $('o'+k).disabled = true;
+  const q = APP.niveaux[S.niv].questions[S.iq];
+  $('slots').innerHTML = S.ordre.map((idx,p)=>`<span class="slot"><i>${p+1}</i>${q.melange[idx]}</span>`).join('');
+}
+function resetOrdre(){
+  const q = APP.niveaux[S.niv].questions[S.iq];
+  S.ordre = [];
+  q.melange.forEach((_,k)=>{ const b=$('o'+k); if(b){ b.classList.remove('sel'); b.disabled=false; } });
+  $('slots').innerHTML = '<span style="color:var(--text3);font-size:.9rem">Clique les étapes dans le bon ordre…</span>';
+  $('fb').innerHTML = '';
+}
+function togFlag(k){
+  const i = S.flags.indexOf(k);
+  if(i>=0) S.flags.splice(i,1); else S.flags.push(k);
+  $('t'+k).classList.toggle('flag');
+}
+
+/* ---------- Vérifications ---------- */
+function repQcm(k){
+  const q = APP.niveaux[S.niv].questions[S.iq];
+  const bon = q.type === 'vf' ? (q.correct ? 0 : 1) : q.correct;
+  const opts = q.type === 'vf' ? ['Vrai','Faux'] : q.options;
+  opts.forEach((_,j)=>{ const b=$('o'+j); b.disabled=true;
+    if(j===bon) b.classList.add('good');
+    if(j===k && k!==bon) b.classList.add('bad');
+    if(j===bon) b.innerHTML += '<span class="mk">✓</span>';
+  });
+  fin(k===bon ? (S.indice?'ok2':'ok1') : 'vu', k===bon);
+}
+function repMulti(){
+  const q = APP.niveaux[S.niv].questions[S.iq];
+  const bon = q.corrects.slice().sort().join(',');
+  const mien = S.multi.slice().sort().join(',');
+  if(mien === bon){
+    q.options.forEach((_,j)=>{ $('o'+j).disabled=true; if(q.corrects.includes(j)) $('o'+j).classList.add('good'); });
+    $('valider').style.display='none';
+    fin(S.essais===0 && !S.indice ? 'ok1':'ok2', true);
+  } else if(S.essais === 0){
+    S.essais++;
+    const justes = S.multi.filter(k=>q.corrects.includes(k)).length;
+    $('fb').innerHTML = `<div class="fb warn"><div class="ttl">Pas encore</div>
+      <p>Tu as coché ${S.multi.length} proposition(s), dont ${justes} correcte(s) sur ${q.corrects.length}. ${q.socratique||''}</p></div>`;
+  } else {
+    q.options.forEach((_,j)=>{ $('o'+j).disabled=true;
+      if(q.corrects.includes(j)) $('o'+j).classList.add('good');
+      else if(S.multi.includes(j)) $('o'+j).classList.add('bad'); });
+    $('valider').style.display='none';
+    fin('vu', false);
+  }
+}
+function repOrdre(){
+  const q = APP.niveaux[S.niv].questions[S.iq];
+  const bon = q.melange.map((_,i)=>i).sort((a,b)=>q.rang[a]-q.rang[b]).join(',');
+  if(S.ordre.length < q.melange.length){
+    $('fb').innerHTML = `<div class="fb warn"><div class="ttl">Ordre incomplet</div><p>Place toutes les étapes avant de vérifier.</p></div>`;
+    return;
+  }
+  if(S.ordre.join(',') === bon){
+    $('valider').style.display='none';
+    fin(S.essais===0 && !S.indice ? 'ok1':'ok2', true);
+  } else if(S.essais === 0){
+    S.essais++;
+    let justes = 0;
+    S.ordre.forEach((idx,p)=>{ if(q.rang[idx] === p) justes++; });
+    $('fb').innerHTML = `<div class="fb warn"><div class="ttl">Pas encore</div>
+      <p>${justes} étape(s) sur ${q.melange.length} sont à la bonne place. ${q.socratique||''}</p>
+      <p><button class="btn ghost sm" onclick="resetOrdre()">↺ Réessayer</button></p></div>`;
+  } else {
+    $('valider').style.display='none';
+    const ordreBon = q.melange.map((m,i)=>[m,q.rang[i]]).sort((a,b)=>a[1]-b[1]).map((x,i)=>`${i+1}. ${x[0]}`);
+    $('slots').innerHTML = ordreBon.map(t=>`<span class="slot">${t}</span>`).join('');
+    fin('vu', false);
+  }
+}
+function repSaisie(){
+  const q = APP.niveaux[S.niv].questions[S.iq];
+  const v = $('rep').value;
+  if(!v.trim()) return;
+  const ok = q.reponses.some(r => normalise(r) === normalise(v));
+  const presque = !ok && q.reponses.some(r => sansAccents(r) === sansAccents(v));
+  if(ok){
+    $('rep').disabled = true; $('valider').style.display='none';
+    fin(S.essais===0 && !S.indice ? 'ok1':'ok2', true);
+  } else if(S.essais === 0){
+    S.essais++;
+    $('fb').innerHTML = `<div class="fb warn"><div class="ttl">${presque?'Presque : il manque un accent ou un signe':'Pas encore'}</div>
+      <p>${presque ? 'La forme est bonne, la graphie ne l’est pas tout à fait. Regarde les accents et les traits d’union.' : (q.socratique||'Relis l’énoncé et reprends la méthode du rappel.')}</p></div>`;
+    $('rep').select();
+  } else {
+    $('rep').disabled = true; $('valider').style.display='none';
+    fin('vu', false);
+  }
+}
+function repNombre(){
+  const q = APP.niveaux[S.niv].questions[S.iq];
+  let v = $('rep').value.replace(/×/g,'*').replace(/÷/g,'/').replace(/,/g,'.').trim();
+  if(!v) return;
+  let n;
+  try{ n = Function('"use strict";return (' + v + ')')(); }catch(e){ n = NaN; }
+  const tol = q.tolerance === undefined ? 0.02 : q.tolerance;
+  const ok = isFinite(n) && Math.abs(n - q.reponse) <= tol;
+  if(ok){
+    $('rep').disabled = true; $('valider').style.display='none';
+    fin(S.essais===0 && !S.indice ? 'ok1':'ok2', true);
+  } else if(S.essais === 0){
+    S.essais++;
+    $('fb').innerHTML = `<div class="fb warn"><div class="ttl">Pas encore</div><p>${q.socratique||'Reprends le calcul étape par étape.'}</p></div>`;
+    $('rep').select();
+  } else {
+    $('rep').disabled = true; $('valider').style.display='none';
+    fin('vu', false);
+  }
+}
+function repChasse(){
+  const q = APP.niveaux[S.niv].questions[S.iq];
+  const bon = q.fautes.slice().sort().join(',');
+  const mien = S.flags.slice().sort().join(',');
+  if(mien === bon){
+    $('valider').style.display='none';
+    q.fautes.forEach(k=>{ const t=$('t'+k); t.classList.remove('flag'); t.classList.add('ok'); t.onclick=null; });
+    fin(S.essais===0 && !S.indice ? 'ok1':'ok2', true);
+  } else if(S.essais === 0){
+    S.essais++;
+    const trouves = S.flags.filter(k=>q.fautes.includes(k)).length;
+    const faux = S.flags.filter(k=>!q.fautes.includes(k)).length;
+    $('fb').innerHTML = `<div class="fb warn"><div class="ttl">Pas encore</div>
+      <p>Ce passage contient ${q.fautes.length} faute(s). Tu en as trouvé ${trouves}${faux?`, et tu as marqué ${faux} mot(s) qui sont corrects`:''}. ${q.socratique||''}</p></div>`;
+  } else {
+    $('valider').style.display='none';
+    q.fautes.forEach(k=>{ const t=$('t'+k); t.classList.remove('flag'); t.classList.add(S.flags.includes(k)?'ok':'miss'); });
+    S.flags.filter(k=>!q.fautes.includes(k)).forEach(k=>{ $('t'+k).classList.remove('flag'); });
+    document.querySelectorAll('.tok').forEach(t=>t.onclick=null);
+    fin('vu', false);
+  }
+}
+
+/* ---------- Fin de question : feedback + bouton suivant ---------- */
+function fin(statut, juste){
+  const q = APP.niveaux[S.niv].questions[S.iq];
+  S.res[S.niv].statuts[S.iq] = statut;
+  S.streak = statut === 'ok1' ? S.streak + 1 : 0;
+  const cls = statut==='ok1' ? 'good' : statut==='ok2' ? 'warn' : 'bad';
+  const ttl = statut==='ok1' ? '✅ Exact' : statut==='ok2' ? '🔄 Corrigé' : '👁 Réponse montrée';
+  const sol = (!juste && q.solution) ? `<p><b>Réponse :</b> ${q.solution}</p>` : '';
+  const dernier = S.iq === nbQ(S.niv) - 1;
+  $('fb').innerHTML = `<div class="fb ${cls}"><div class="ttl">${ttl}</div>${sol}<p>${q.explication}</p></div>
+    <button class="btn wide" onclick="${dernier?'bilanNiveau()':'suivante()'}">${dernier?'Voir le bilan du niveau ➜':'Question suivante ➜'}</button>`;
+  const b = $('btnIndice'); if(b) b.style.display='none';
+  majHeader();
+}
+function suivante(){ S.iq++; question(); }
+
+/* ============================================================
+   Bilans
+   ============================================================ */
+function compte(st){ return { ok1:st.filter(s=>s==='ok1').length, ok2:st.filter(s=>s==='ok2').length, vu:st.filter(s=>s==='vu').length }; }
+function medaille(p){ return p>=90?'🏆':p>=70?'🥇':p>=50?'🥈':'🥉'; }
+function grade(p){ return p>=85?['A','Excellent']:p>=65?['B','Très bien']:p>=45?['C','Satisfaisant']:['D','À retravailler']; }
+function legende(){
+  return `<div class="legend">
+    <span><span class="dot" style="background:var(--success)"></span>Juste du 1er coup</span>
+    <span><span class="dot" style="background:var(--orange)"></span>Trouvé après indice ou 2e essai</span>
+    <span><span class="dot" style="background:var(--error)"></span>Réponse montrée</span></div>`;
+}
+function confettis(){
+  const cols=['#34d399','#f59e0b','#60a5fa','#f472b6','#a78bfa'];
+  for(let i=0;i<70;i++){
+    const d=document.createElement('div'); d.className='confetti';
+    d.style.left=Math.random()*100+'vw';
+    d.style.background=cols[i%cols.length];
+    d.style.animationDuration=(2.2+Math.random()*1.8)+'s';
+    d.style.animationDelay=(Math.random()*.9)+'s';
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(),5200);
+  }
+}
+function bilanNiveau(){
+  const st = S.res[S.niv].statuts, c = compte(st), n = st.length;
+  const p = Math.round(c.ok1/n*100);
+  const [g,lib] = grade(p);
+  const pred = S.pred[S.niv];
+  const ecart = pred===undefined ? '' :
+    `<p>Tu prédisais <b>${pred}/${n}</b> et tu en as réussi <b>${c.ok1}/${n}</b> du premier coup. ${
+      pred===c.ok1 ? 'Tu te connais bien : c’est exactement ça.' :
+      pred>c.ok1 ? 'Tu te croyais plus solide que tu ne l’es sur ce point — c’est justement là qu’il faut retourner.' :
+      'Tu te sous-estimes : tu sais plus de choses que tu ne le crois.'}</p>`;
+  const ouvert = p >= 80;
+  if(ouvert && S.niv === S.debloque && S.debloque < APP.niveaux.length-1) S.debloque = S.niv+1;
+  app.innerHTML = `
+  <div class="card">
+    <div class="eyebrow">BILAN DU NIVEAU ${S.niv+1}</div>
+    <h2>${APP.niveaux[S.niv].titre}</h2>
+    ${legende()}
+    <table>
+      <tr><th>Résultat</th><th>Nombre</th></tr>
+      <tr><td>✅ Juste du 1er coup</td><td class="mono">${c.ok1}</td></tr>
+      <tr><td>🔄 Corrigé au 2e essai / avec indice</td><td class="mono">${c.ok2}</td></tr>
+      <tr><td>👁 Réponse montrée</td><td class="mono">${c.vu}</td></tr>
+      <tr><th>Total</th><th class="mono">${n}</th></tr>
+    </table>
+    <div class="medal">${medaille(p)}</div>
+    <div class="grade">${g} — ${lib} · ${p} % du 1er coup</div>
+    ${ecart}
+    <p>${ouvert ? 'Le niveau suivant est ouvert.' : 'Il te manque 80 % de réussite du premier coup pour ouvrir la suite. Refaire le niveau maintenant est le meilleur usage de ton temps : tu retiendras les questions ratées.'}</p>
+    <div class="row">
+      <button class="btn" onclick="ouvrirNiveau(${S.niv})">🔄 Refaire ce niveau</button>
+      ${ouvert && S.niv < APP.niveaux.length-1 ? `<button class="btn" onclick="ouvrirNiveau(${S.niv+1})">Niveau suivant ➜</button>` : ''}
+      ${!ouvert && S.niv < APP.niveaux.length-1 ? `<button class="btn ghost" onclick="forcer()">Continuer quand même</button>` : ''}
+      <button class="btn ghost" onclick="hub()">Tous les niveaux</button>
+      ${S.niv === APP.niveaux.length-1 ? `<button class="btn" onclick="bilanFinal()">🏁 Bilan complet</button>` : ''}
+    </div>
+  </div>`;
+  if(p>=70) confettis();
+  majHeader();
+  window.scrollTo(0,0);
+}
+function forcer(){ if(S.debloque === S.niv) S.debloque = S.niv+1; ouvrirNiveau(S.niv+1); }
+
+function bilanFinal(){
+  let ok1=0, ok2=0, vu=0, tot=0, lignes='';
+  APP.niveaux.forEach((n,i)=>{
+    const st = S.res[i] ? S.res[i].statuts.filter(Boolean) : [];
+    const c = compte(st);
+    ok1+=c.ok1; ok2+=c.ok2; vu+=c.vu; tot+=st.length;
+    lignes += `<tr><td>${n.titre}</td><td class="mono">${c.ok1}</td><td class="mono">${c.ok2}</td><td class="mono">${c.vu}</td><td class="mono">${st.length}</td></tr>`;
+  });
+  const p = tot? Math.round(ok1/tot*100):0;
+  const [g,lib] = grade(p);
+  const faibles = APP.niveaux.map((n,i)=>{
+    const st = S.res[i] ? S.res[i].statuts.filter(Boolean) : [];
+    if(!st.length) return null;
+    const pc = st.filter(s=>s==='ok1').length/st.length*100;
+    return pc < 65 ? n.titre : null;
+  }).filter(Boolean);
+  app.innerHTML = `
+  <div class="card">
+    <div class="eyebrow">BILAN COMPLET</div>
+    <h1>${APP.titre}</h1>
+    ${legende()}
+    <table>
+      <tr><th>Niveau</th><th>✅</th><th>🔄</th><th>👁</th><th>Total</th></tr>
+      ${lignes}
+      <tr><th>Ensemble</th><th class="mono">${ok1}</th><th class="mono">${ok2}</th><th class="mono">${vu}</th><th class="mono">${tot}</th></tr>
+    </table>
+    <div class="medal">${medaille(p)}</div>
+    <div class="grade">${g} — ${lib} · ${p} % du 1er coup</div>
+    ${faibles.length ? `<p><b>À revoir en priorité :</b> ${faibles.join(', ')}. Refais ces niveaux demain plutôt qu'aujourd'hui : revenir après une nuit fixe beaucoup mieux les choses.</p>`
+      : `<p>Aucun niveau sous les 65 %. Refais l'ensemble dans deux jours pour vérifier que ça tient dans la durée.</p>`}
+    <div class="row">
+      <button class="btn" onclick="hub()">Retour aux niveaux</button>
+      <button class="btn ghost" onclick="memo()">📄 Fiche mémo</button>
+      <button class="btn ghost" onclick="location.reload()">🔄 Tout recommencer</button>
+    </div>
+  </div>`;
+  if(p>=70) confettis();
+  majHeader();
+  window.scrollTo(0,0);
+}
+
+/* ============================================================
+   Fiche mémo & atelier
+   ============================================================ */
+function memo(){
+  app.innerHTML = `<div class="card"><div class="eyebrow">FICHE MÉMO</div><h2>${APP.titre}</h2>${APP.memo}
+    <div class="row"><button class="btn" onclick="hub()">← Retour aux niveaux</button>
+    <button class="btn ghost" onclick="window.print()">🖨️ Imprimer</button></div></div>`;
+  window.scrollTo(0,0);
+}
+function atelier(){
+  const a = APP.atelier;
+  app.innerHTML = `<div class="card"><div class="eyebrow">ATELIER LIBRE — NON NOTÉ</div><h2>${a.titre}</h2>
+    ${a.consigne}
+    <div id="zoneAtelier"></div>
+    <div class="row"><button class="btn ghost" onclick="hub()">← Retour aux niveaux</button></div></div>`;
+  a.monter();
+  window.scrollTo(0,0);
+}
+
+accueil();
+</script>
+</body>
+</html>
